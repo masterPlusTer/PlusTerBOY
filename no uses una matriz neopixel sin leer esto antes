@@ -2,7 +2,7 @@ algo de lo que no se habla y que al momento de programar da muchos dolores de ca
 las matrices neopixel son muy diferentes a las matrices led de toda la vida, 
 la matriz neopixel esta configurada como una tira led. 
 y si no tienes esto en cuenta, te vas a encontrar con que al momento de ejecutar tu codigo cosas raras pasen cuando te muevas en el eje Y
-para resolver esto tendras que, o bien hacerte de una libreria que se ocupe de esto y te despreocupes y codifiques como si estuvieras usando una matriz led normal
+para resolver esto tendras que, o bien hacerte de una libreria que se ocupe de esto y entonces te despreocupes y codifiques como si estuvieras usando una matriz led normal
 o bien ocuparte de ir fila de por medio invirtiendo el orden de los pixeles
 porque la matriz neopixel hace literalmente esto:
 
