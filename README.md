@@ -7,7 +7,7 @@ yconecte un nano a una matriz neopixel de 22 x 22, botones y un buzzer.
 Es una porqueria pero hace mas llevadera la programacion del arduino.
 
 
-No voy a hacer un datasheet , con las imagenes tiene que ser mas que suficiente 
+No voy a hacer un datasheet ni un esquematico , con las imagenes tiene que ser mas que suficiente 
 
 
 
