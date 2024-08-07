@@ -3,7 +3,7 @@
 
 
 como no se me da la gana ocuparme de cosas mas importantes me dispuse a hacer este aparato del mal,
-yconecte un nano a una matriz neopixel de 22 x 22 botones y un buzzer.
+yconecte un nano a una matriz neopixel de 22 x 22, botones y un buzzer.
 Es una porqueria pero hace mas llevadera la programacion del arduino.
 
 
