@@ -14,7 +14,7 @@ porque la matriz neopixel hace literalmente esto:
 si te fijas bien, va como una serpiente de izquierda a derecha y luego de derecha a izquierda, porque la matriz neopixel es una tira led doblada basicamente,
 a diferencia de la matriz normal donde todas las filas comienzan en la izquierda 
 
-por esta razon lo que hay que hacer es, invertir la orientacion de las filas impares (recuerda que empezamos por el cero , asi que hay que invertir la 1, 3, 5, 6 etc etc )
+por esta razon lo que hay que hacer es, invertir la orientacion de las filas impares (recuerda que empezamos por el cero , asi que hay que invertir la 1, 3, 5, 7, 9 etc etc )
 
 
 
