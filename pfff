@@ -21,6 +21,9 @@ bool previousButtonA = true;
 bool previousButtonState[4] = {true, true, true, true};
 
 void setup() {
+    
+Serial.begin(9600);
+
   // Configurar los pines de los pulsadores como entrada con resistencia de pull-up
   pinMode(BUTTON_B, INPUT_PULLUP);
   pinMode(BUTTON_A, INPUT_PULLUP);
@@ -46,6 +49,9 @@ void loop() {
   if (!currentButtonB && previousButtonB) {
     buzzClick(1000, 100); // Emitir clic solo al presionar el botón
     executePattern(0); // Por ejemplo, patrón 1
+                  Serial.println(currentButtonB);
+
+
   }
   previousButtonB = currentButtonB;
 
@@ -53,6 +59,8 @@ void loop() {
   bool currentButtonA = digitalRead(BUTTON_A);
   if (!currentButtonA && previousButtonA) {
     buzzClick(1200, 100); // Emitir clic solo al presionar el botón
+              Serial.println(currentButtonA);
+
     executePattern(1); // Por ejemplo, patrón 2
   }
   previousButtonA = currentButtonA;
@@ -62,6 +70,8 @@ void loop() {
     bool currentState = digitalRead(buttons[i]);
     if (!currentState && previousButtonState[i]) {
       buzzClick(800 + i * 100, 100); // Emitir clic solo al presionar el botón
+          Serial.println(i);
+
       executePattern(i + 2);         // Los patrones 3 a 6
     }
     previousButtonState[i] = currentState;
