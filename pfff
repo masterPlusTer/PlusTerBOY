@@ -24,6 +24,7 @@ bool previousButtonState[4] = {true, true, true, true};
 unsigned long lastUpdateTime = 0;
 unsigned long patternInterval = 50; // Intervalo para actualizaciones de patrones
 unsigned long ledIndex = 0;
+unsigned long currentColumn = 0;
 uint8_t currentPattern = 255; // Ningún patrón activo por defecto
 
 void setup() {
@@ -66,6 +67,7 @@ void loop() {
     buzzClick(1200, 100); // Emitir clic solo al presionar el botón
     currentPattern = 1;   // Por ejemplo, patrón 2
     ledIndex = 0;
+    currentColumn = 0;
     lastUpdateTime = currentTime;
     Serial.println(currentButtonA);
   }
@@ -107,15 +109,20 @@ void executePattern(uint8_t pattern) {
       }
       break;
 
-    case 1: // Patrón 2: Barrido vertical
-      if (ledIndex < NUM_LEDS) {
-        int y = ledIndex / NUM_LEDS_X;
-        int x = ledIndex % NUM_LEDS_X;
-        int ledPos = (y % 2 == 0) ? x + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + y * NUM_LEDS_X;
-        pixels.setPixelColor(ledPos, pixels.Color(0, 255, 0)); // Verde
+    case 1: // Patrón 2: Barrido vertical de arriba hacia abajo
+      if (currentColumn < NUM_LEDS_Y) {
+        for (int x = 0; x < NUM_LEDS_X; x++) {
+          int ledIndex = (currentColumn % 2 == 0) ? x + currentColumn * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + currentColumn * NUM_LEDS_X;
+          pixels.setPixelColor(ledIndex, pixels.Color(0, 255, 0)); // Verde
+        }
         pixels.show();
-        pixels.setPixelColor(ledPos, pixels.Color(0, 0, 0));   // Apagar
-        ledIndex++;
+
+        for (int x = 0; x < NUM_LEDS_X; x++) {
+          int ledIndex = (currentColumn % 2 == 0) ? x + currentColumn * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + currentColumn * NUM_LEDS_X;
+          pixels.setPixelColor(ledIndex, pixels.Color(0, 0, 0)); // Apagar
+        }
+
+        currentColumn++;
       } else {
         currentPattern = 255; // Terminar patrón
       }
@@ -147,3 +154,4 @@ void executePattern(uint8_t pattern) {
 void buzzClick(uint16_t frequency, uint16_t duration) {
   tone(BUZZER_PIN, frequency, duration); // Emitir tono
 }
+
