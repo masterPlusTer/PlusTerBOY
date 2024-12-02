@@ -20,9 +20,14 @@ bool previousButtonB = true;
 bool previousButtonA = true;
 bool previousButtonState[4] = {true, true, true, true};
 
+// Variables para temporizadores
+unsigned long lastUpdateTime = 0;
+unsigned long patternInterval = 50; // Intervalo para actualizaciones de patrones
+unsigned long ledIndex = 0;
+uint8_t currentPattern = 255; // Ningún patrón activo por defecto
+
 void setup() {
-    
-Serial.begin(9600);
+  Serial.begin(9600);
 
   // Configurar los pines de los pulsadores como entrada con resistencia de pull-up
   pinMode(BUTTON_B, INPUT_PULLUP);
@@ -48,10 +53,10 @@ void loop() {
   bool currentButtonB = digitalRead(BUTTON_B);
   if (!currentButtonB && previousButtonB) {
     buzzClick(1000, 100); // Emitir clic solo al presionar el botón
-    executePattern(0); // Por ejemplo, patrón 1
-                  Serial.println(currentButtonB);
-
-
+    currentPattern = 0;   // Por ejemplo, patrón 1
+    ledIndex = 0;         // Reiniciar el índice del patrón
+    lastUpdateTime = currentTime;
+    Serial.println(currentButtonB);
   }
   previousButtonB = currentButtonB;
 
@@ -59,9 +64,10 @@ void loop() {
   bool currentButtonA = digitalRead(BUTTON_A);
   if (!currentButtonA && previousButtonA) {
     buzzClick(1200, 100); // Emitir clic solo al presionar el botón
-              Serial.println(currentButtonA);
-
-    executePattern(1); // Por ejemplo, patrón 2
+    currentPattern = 1;   // Por ejemplo, patrón 2
+    ledIndex = 0;
+    lastUpdateTime = currentTime;
+    Serial.println(currentButtonA);
   }
   previousButtonA = currentButtonA;
 
@@ -70,39 +76,48 @@ void loop() {
     bool currentState = digitalRead(buttons[i]);
     if (!currentState && previousButtonState[i]) {
       buzzClick(800 + i * 100, 100); // Emitir clic solo al presionar el botón
-          Serial.println(i);
-
-      executePattern(i + 2);         // Los patrones 3 a 6
+      currentPattern = i + 2;        // Los patrones 3 a 6
+      ledIndex = 0;
+      lastUpdateTime = currentTime;
+      Serial.println(i);
     }
     previousButtonState[i] = currentState;
+  }
+
+  // Ejecutar el patrón actual
+  if (currentPattern != 255 && (currentTime - lastUpdateTime >= patternInterval)) {
+    executePattern(currentPattern);
+    lastUpdateTime = currentTime;
   }
 }
 
 void executePattern(uint8_t pattern) {
-  pixels.clear();
-
   switch (pattern) {
     case 0: // Patrón 1: Barrido horizontal
-      for (int y = 0; y < NUM_LEDS_Y; y++) {
-        for (int x = 0; x < NUM_LEDS_X; x++) {
-          int ledIndex = (y % 2 == 0) ? x + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + y * NUM_LEDS_X;
-          pixels.setPixelColor(ledIndex, pixels.Color(0, 0, 255)); // Azul
-          pixels.show();
-          delay(50);
-          pixels.setPixelColor(ledIndex, pixels.Color(0, 0, 0)); // Apagar
-        }
+      if (ledIndex < NUM_LEDS) {
+        int y = ledIndex / NUM_LEDS_X;
+        int x = ledIndex % NUM_LEDS_X;
+        int ledPos = (y % 2 == 0) ? x + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + y * NUM_LEDS_X;
+        pixels.setPixelColor(ledPos, pixels.Color(0, 0, 255)); // Azul
+        pixels.show();
+        pixels.setPixelColor(ledPos, pixels.Color(0, 0, 0));   // Apagar
+        ledIndex++;
+      } else {
+        currentPattern = 255; // Terminar patrón
       }
       break;
 
     case 1: // Patrón 2: Barrido vertical
-      for (int x = 0; x < NUM_LEDS_X; x++) {
-        for (int y = 0; y < NUM_LEDS_Y; y++) {
-          int ledIndex = (y % 2 == 0) ? x + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + y * NUM_LEDS_X;
-          pixels.setPixelColor(ledIndex, pixels.Color(0, 255, 0)); // Verde
-          pixels.show();
-          delay(50);
-          pixels.setPixelColor(ledIndex, pixels.Color(0, 0, 0)); // Apagar
-        }
+      if (ledIndex < NUM_LEDS) {
+        int y = ledIndex / NUM_LEDS_X;
+        int x = ledIndex % NUM_LEDS_X;
+        int ledPos = (y % 2 == 0) ? x + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + y * NUM_LEDS_X;
+        pixels.setPixelColor(ledPos, pixels.Color(0, 255, 0)); // Verde
+        pixels.show();
+        pixels.setPixelColor(ledPos, pixels.Color(0, 0, 0));   // Apagar
+        ledIndex++;
+      } else {
+        currentPattern = 255; // Terminar patrón
       }
       break;
 
@@ -111,7 +126,7 @@ void executePattern(uint8_t pattern) {
         pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // Rojo
       }
       pixels.show();
-      delay(500);
+      currentPattern = 255; // Terminar patrón
       break;
 
     case 3: // Patrón 4: Parpadeo aleatorio
@@ -119,9 +134,9 @@ void executePattern(uint8_t pattern) {
         int ledIndex = random(NUM_LEDS);
         pixels.setPixelColor(ledIndex, pixels.Color(random(255), random(255), random(255)));
         pixels.show();
-        delay(50);
         pixels.setPixelColor(ledIndex, 0); // Apagar
       }
+      currentPattern = 255; // Terminar patrón
       break;
 
     default:
