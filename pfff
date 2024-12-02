@@ -94,8 +94,10 @@ void loop() {
 }
 
 void executePattern(uint8_t pattern) {
+  
   switch (pattern) {
     case 0: // Patrón 1: Barrido horizontal
+
       if (currentStep < NUM_LEDS_X) {
         for (int y = 0; y < NUM_LEDS_Y; y++) {
           int ledIndex = (y % 2 == 0) ? currentStep + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - currentStep) + y * NUM_LEDS_X;
@@ -103,10 +105,12 @@ void executePattern(uint8_t pattern) {
         }
         pixels.show();
 
+
         for (int y = 0; y < NUM_LEDS_Y; y++) {
           int ledIndex = (y % 2 == 0) ? currentStep + y * NUM_LEDS_X : (NUM_LEDS_X - 1 - currentStep) + y * NUM_LEDS_X;
           pixels.setPixelColor(ledIndex, pixels.Color(0, 0, 0)); // Apagar
         }
+                  Serial.println("  case 0: // Patrón 1: Barrido horizontal");
 
         currentStep++;
       } else {
@@ -126,6 +130,7 @@ void executePattern(uint8_t pattern) {
           int ledIndex = (currentStep % 2 == 0) ? x + currentStep * NUM_LEDS_X : (NUM_LEDS_X - 1 - x) + currentStep * NUM_LEDS_X;
           pixels.setPixelColor(ledIndex, pixels.Color(0, 0, 0)); // Apagar
         }
+                  Serial.println("case 1: // Patrón 2: Barrido vertical de arriba hacia abajo");
 
         currentStep++;
       } else {
@@ -134,12 +139,20 @@ void executePattern(uint8_t pattern) {
       break;
 
     case 2: // Patrón 3: Encender todos los LEDs en rojo
+
+
       for (int i = 0; i < NUM_LEDS; i++) {
         pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // Rojo
+
       }
       pixels.show();
+
+
+      
       currentPattern = 255; // Terminar patrón
+
       break;
+
 
     case 3: // Patrón 4: Parpadeo aleatorio
       for (int i = 0; i < 50; i++) {
@@ -148,6 +161,9 @@ void executePattern(uint8_t pattern) {
         pixels.show();
         pixels.setPixelColor(ledIndex, 0); // Apagar
       }
+                  Serial.println(" case 3: // Patrón 4: Parpadeo aleatorio");
+
+      
       currentPattern = 255; // Terminar patrón
       break;
 
