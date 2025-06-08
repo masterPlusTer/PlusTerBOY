@@ -7,8 +7,9 @@ o bien ocuparte de ir fila de por medio invirtiendo el orden de los pixeles
 porque la matriz neopixel hace literalmente esto:
 
 
-                               
-            ![image](https://github.com/user-attachments/assets/cef5f99f-48fb-4f93-bf46-ae930de865d6)
+![452808779-cef5f99f-48fb-4f93-bf46-ae930de865d6](https://github.com/user-attachments/assets/e3dd44b1-c295-4558-bd05-a85ec6d72016)
+
+
                         
 
 si te fijas bien, va como una serpiente de izquierda a derecha y luego de derecha a izquierda, porque la matriz neopixel es una tira led doblada basicamente,
