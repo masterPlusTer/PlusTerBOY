@@ -180,11 +180,11 @@ void showTitle() {
   // Dibujar SNAKE centrado (cada letra ocupa 4x5 píxeles)
   uint8_t startX = (MATRIX_SIZE - 20) / 2; // 4 letras * 4 + 4 espacios = 20
   
-  drawLetterS(startX, 8, 0, 255, 0);       // Verde
-  drawLetterN(startX+5, 8, 255, 0, 0);     // Rojo
-  drawLetterA(startX+10, 8, 0, 0, 255);    // Azul
-  drawLetterK(startX+15, 8, 255, 0, 255);  // Magenta
-  drawLetterE(startX+20, 8, 255, 255, 0);  // Amarillo
+  drawLetterS(startX-1, 8, 0, 255, 0);       // Verde
+  drawLetterN(startX+4, 8, 255, 0, 0);     // Rojo
+  drawLetterA(startX+8, 8, 0, 0, 255);    // Azul
+  drawLetterK(startX+13, 8, 255, 0, 255);  // Magenta
+  drawLetterE(startX+18, 8, 255, 255, 0);  // Amarillo
   
   updateLEDs();
   
